@@ -5,15 +5,14 @@ import jwt from "jsonwebtoken";
 export async function signup(req, res) {
   try {
     const { fullName, email, password } = req.body;
+    // check that email , name , password is given or not?
     if (!email || !fullName || !password) {
       return res.status(400).json({
-        // Changed from 500 to 400
-        message: "All of these fields are required to be full", // Fixed typo
+        message: "All of these fields are required to be full",
       });
     }
     if (password.length < 6) {
       return res.status(400).json({
-        // Changed from 500 to 400
         message: "Password Must be atleast of length 6",
       });
     }
@@ -53,7 +52,7 @@ export async function signup(req, res) {
     const token = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
     res.cookie("token", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -153,7 +152,7 @@ export async function onBoard(req, res) {
         ...req.body,
         isOnboarded: true,
       },
-      { new: true }
+      { new: true },
     );
     //TODO: Update User info in Stream.
 
@@ -164,12 +163,12 @@ export async function onBoard(req, res) {
         image: updatedUser.profilePic || " ",
       });
       console.log(
-        `Stream User is Updated after on-Boarding ${updatedUser.fullName}`
+        `Stream User is Updated after on-Boarding ${updatedUser.fullName}`,
       );
     } catch (streamError) {
       console.log(
         "Error updating Stream User during On-Boarding!! ",
-        streamError.message
+        streamError.message,
       );
     }
 
@@ -183,9 +182,9 @@ export async function onBoard(req, res) {
       user: updatedUser,
     });
   } catch (error) {
-    console.log("On - Boarding Error!!", error),
+    (console.log("On - Boarding Error!!", error),
       res.status(500).json({
         message: "Internal Server Error!!",
-      });
+      }));
   }
 }
